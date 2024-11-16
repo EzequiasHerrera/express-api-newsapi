@@ -27,7 +27,8 @@ const getOneNew = async (req, res, next) => {
 
 const createNews = async (req, res, next) => {
     try {
-        const newsToCreate = new NewsModel(req.body);
+        const userIp = req.ip || req.headers['x-forwarded-for'];
+        const newsToCreate = new NewsModel({ ...req.body, userIp: userIp }); //Adding IP to the body
         const createdNew = await newsToCreate.save();
         res.status(201).json({ message: "New created correctly", data: createdNew });
     } catch (error) {

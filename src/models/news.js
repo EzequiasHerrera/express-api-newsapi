@@ -20,7 +20,15 @@ const newsSchema = new mongoose.Schema(
             required: [true, "Name is required"],
             trim: true,
             minlength: [3, "Name must be at least 3 characters"],
-        }
+        },
+        userIp: {
+            type: String,
+            required: [true, "IP is required"],
+        },
+        timestamps: {
+            type: [Date], // Dates array
+            default: [],
+        },
     },
     {
         collection: "news", // Nombre explícito de la colección
@@ -29,5 +37,28 @@ const newsSchema = new mongoose.Schema(
 );
 
 const News = mongoose.model("News", newsSchema);
+
+newsSchema.pre("save", async function (next) {
+    const userIp = this.userIp;
+    try {
+        const lastUserPosts = await News.find({ "userIp": userIp }).sort({ "createdAt": -1 });
+
+        if (lastUserPosts.length >= 3) {
+            const lastPostTime = lastUserPosts[0].createdAt;
+            const currentTime = new Date();
+            const timeDifferenceInHours = (currentTime - lastPostTime) / (1000 * 60 * 60);
+
+            if (timeDifferenceInHours < 1) {
+                const error = new Error("You can't create more than 3 posts within 1 hour.");
+                error.statusCode = 400;
+                throw error;
+            }
+        }
+
+        next();
+    } catch (error) {
+        next(error);
+    }
+});
 
 export default News;
