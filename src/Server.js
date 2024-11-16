@@ -1,6 +1,7 @@
 import express from "express";
-import v1NewsRouter from './v1/routes/newsRoutes.js';
 import mongoose from "mongoose";
+
+import v1NewsRouter from './v1/routes/newsRoutes.js';
 import { errorHandler } from "./helpers/errorHandler.js";
 
 class Server {
@@ -9,8 +10,8 @@ class Server {
         this.app = express();
         this.app.use(express.json());
         this.setRoutes();
-        this.app.use(errorHandler);
         this.connectBD();
+        this.app.use(errorHandler);
     }
 
     setRoutes() {

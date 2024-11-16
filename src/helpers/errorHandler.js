@@ -1,5 +1,5 @@
 const checkExists = (resource, message = "Recurso no encontrado", statusCode = 500) => {
-    if (!resource) {
+    if (!resource || (Array.isArray(resource) && resource.length === 0)) {
         const error = new Error(message);
         error.statusCode = statusCode;
         throw error;
