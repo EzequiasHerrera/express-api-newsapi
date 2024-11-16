@@ -1,0 +1,11 @@
+{
+  "name": "noticiero_api",
+  "version": "1.0.0",
+  "description": "API that will able people to send news and a description to be read in a teleprompter for a TV news",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Cranky",
+  "license": "ISC"
+}
