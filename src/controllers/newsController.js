@@ -1,4 +1,5 @@
 import NewsModel from "../models/news.js";
+import mongoose from "mongoose";
 import { checkExists } from "../helpers/errorHandler.js"
 
 const getAllNews = async (req, res, next) => {
@@ -14,7 +15,7 @@ const getAllNews = async (req, res, next) => {
 const getOneNew = async (req, res, next) => {
     try {
         const newId = req.params.newId;
-        checkExists(newId, "New's ID is needed.", 400);
+        checkExists(mongoose.Types.ObjectId.isValid(newId), "Wrong input for ID", 400);
 
         const wantedNew = await NewsModel.findById(newId);
         checkExists(wantedNew, "Wanted's New doesn't exist.", 404);
