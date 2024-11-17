@@ -1,5 +1,4 @@
 import env from 'dotenv/config';
-import Server from "./Server.js";
+import { app } from "./Server.js";
 
-const server = new Server();
-server.listen();
+export default app;
